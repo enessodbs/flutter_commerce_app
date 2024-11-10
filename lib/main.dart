@@ -6,6 +6,7 @@ import 'package:flutter_ecommerce_app/ui/cubit/kategori_cubit.dart';
 import 'package:flutter_ecommerce_app/ui/cubit/kurun_cubit.dart';
 import 'package:flutter_ecommerce_app/ui/cubit/sepet_cubit.dart';
 import 'package:flutter_ecommerce_app/ui/views/anasayfa.dart';
+import 'package:flutter_ecommerce_app/ui/views/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const Anasayfa()),
+          home: const SplashScreen()),
     );
   }
 }
