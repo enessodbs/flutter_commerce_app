@@ -8,7 +8,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return AnimatedSplashScreen(
+    return AnimatedSplashScreen(
       splash: LottieBuilder.asset("animation/Animation - 1731254392624.json"),
       nextScreen: const Anasayfa(),
       duration: 2800,

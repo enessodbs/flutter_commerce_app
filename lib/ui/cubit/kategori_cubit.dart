@@ -9,11 +9,11 @@ class KategoriCubit extends Cubit<List<Kategori>> {
 
   Future<void> kategoriler() async {
     try {
-      var liste = await kRepo.kategoriler(); // await ile sonucu bekle
-      emit(liste); // Listeyi emit ile yayınla
+      var liste = await kRepo.kategoriler();
+      emit(liste);
     } catch (e) {
       print("Kategori yüklenirken hata oluştu: $e");
-      emit([]); // Hata durumunda boş bir liste emit et
+      emit([]);
     }
   }
 }

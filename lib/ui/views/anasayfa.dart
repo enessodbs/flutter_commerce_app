@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/const/constant.dart';
 import 'package:flutter_ecommerce_app/data/entity/category.dart';
 import 'package:flutter_ecommerce_app/data/entity/product.dart';
 import 'package:flutter_ecommerce_app/ui/cubit/anasayfa_cubit.dart';
 import 'package:flutter_ecommerce_app/ui/cubit/kategori_cubit.dart';
 import 'package:flutter_ecommerce_app/ui/views/detay.dart';
-import 'package:flutter_ecommerce_app/ui/views/kategori.dart';
 import 'package:flutter_ecommerce_app/ui/views/sepet.dart';
-
 
 class Anasayfa extends StatefulWidget {
   const Anasayfa({super.key});
@@ -31,7 +30,10 @@ class _AnasayfaState extends State<Anasayfa> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Tecno App",style: TextStyle(fontFamily: "Playfair",fontSize: 30,fontWeight: FontWeight.bold),),
+        title: Text(
+          "Techno App",
+          style: baslikStyle
+        ),
         centerTitle: true,
         actions: [
           Padding(
@@ -75,50 +77,44 @@ class _AnasayfaState extends State<Anasayfa> {
         if (kategoriler.isNotEmpty) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Kategoriler arasındaki boşluğu küçülttük
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height *
-                      0.04, // Boşluğu daralttık
-                  child: GridView.builder(
-                    itemCount: kategoriler.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1.5 / 0.4,
-                    ),
-                    itemBuilder: (context, index) {
-                      var kategori = kategoriler[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.06,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: kategoriler.map((kategori) {
+                    return Container(
+                      width: 100,
+                      margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          context
+                              .read<AnasayfaCubit>()
+                              .urunleriYukle(kategori: kategori.name);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
                         ),
-                        margin: const EdgeInsets.all(1.0),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    KategoriUrunleri(kategori: kategori),
-                              ),
-                            );
-                            print(kategori.name);
-                          },
+                        child: Center(
                           child: Text(
                             kategori.name,
-                            style: const TextStyle(color: Colors.black),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Literata",
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ],
+              ),
             ),
           );
         } else {
@@ -175,7 +171,7 @@ class _AnasayfaState extends State<Anasayfa> {
                       const SizedBox(height: 8),
                       Text(
                         product.ad,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold,),
                       ),
                       Text("₺${product.fiyat}"),
                     ],

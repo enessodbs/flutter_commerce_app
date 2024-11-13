@@ -23,8 +23,21 @@ class SepetCubit extends Cubit<List<CartProduct>> {
       await productRepo.sepetUrunSil(kullaniciAdi, sepetId);
       await sepetListele(kullaniciAdi);
     } catch (error) {
-      // Handle error (show error message, etc.)
       print('Error removing product from cart: $error');
     }
+  }
+
+  int toplamHesapla(List<CartProduct> cartProducts) {
+    int total = 0;
+    for (var cartProduct in cartProducts) {
+      total += cartProduct.product.fiyat * cartProduct.siparisAdeti;
+    }
+    return total;
+  }
+
+  Future<void> sepetiBosalt(String kullaniciAdi) async {
+    var sepetListesi = state;
+    await productRepo.sepetiBosalt(kullaniciAdi, sepetListesi);
+    emit([]);
   }
 }

@@ -7,19 +7,13 @@ class AnasayfaCubit extends Cubit<List<Product>> {
 
   var productRepo = ProductRepo();
 
-  Future<void> urunleriYukle() async {
-    var liste = await productRepo.urunleriYukle();
+  Future<void> urunleriYukle({String kategori = "Tüm Ürünler"}) async {
+    var liste = await productRepo.urunleriYukle(kategori: kategori);
     emit(liste);
-  }
-
-  List<Product> getProductsByCategory(String category) {
-    return state.where((product) => product.kategori == category).toList();
   }
 
   Future<void> ara(String aramaKelimesi) async {
     var liste = await productRepo.urunAra(aramaKelimesi);
     emit(liste);
   }
-
-
 }

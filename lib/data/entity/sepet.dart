@@ -2,7 +2,7 @@ import 'package:flutter_ecommerce_app/data/entity/product.dart';
 
 class CartProduct {
   final Product product;
-  final int siparisAdeti;
+  int siparisAdeti;
   final String kullaniciAdi;
   final int sepetId;
 

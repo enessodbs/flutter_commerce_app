@@ -59,12 +59,20 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - images/
     - animation/
   fonts:
     - family: Playfair
       fonts:
-        - asset: fonts/Playfair.ttf    
+        - asset: fonts/Playfair.ttf
+    - family: Lora
+      fonts:
+        - asset: fonts/Lora.ttf   
+    - family: Bebas
+      fonts:
+        - asset: fonts/Bebas.ttf       
+    - family: Literata
+      fonts:
+        - asset: fonts/Literata.ttf                          
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/const/constant.dart';
 import 'package:flutter_ecommerce_app/data/entity/product.dart';
 import 'package:flutter_ecommerce_app/ui/cubit/detay_cubit.dart';
 import 'package:flutter_ecommerce_app/ui/views/sepet.dart';
@@ -7,9 +8,9 @@ import 'package:flutter_ecommerce_app/ui/views/sepet.dart';
 class DetaySayfa extends StatefulWidget {
   Product product;
   DetaySayfa({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
   State<DetaySayfa> createState() => _DetaySayfaState();
@@ -21,10 +22,10 @@ class _DetaySayfaState extends State<DetaySayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(widget.product.ad, style: TextStyle(fontSize: 22)),
+        backgroundColor: backgroundColor,
+        title: Text("Techno App", style: baslikStyle),
         centerTitle: true,
         actions: [
           Padding(
@@ -82,10 +83,10 @@ class _DetaySayfaState extends State<DetaySayfa> {
                       const SizedBox(width: 20),
                       Text(
                         "₺${widget.product.fiyat}",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                            color: textColor),
                       ),
                     ],
                   ),
@@ -150,19 +151,19 @@ class _DetaySayfaState extends State<DetaySayfa> {
             );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
         elevation: 0,
       ),
-      child: const Text(
+      child: Text(
         "Sepete Ekle",
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: textColor,
         ),
       ),
     );

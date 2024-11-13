@@ -24,15 +24,22 @@ class ProductRepo {
       return productList;
     } catch (e) {
       print("JSON Ayrıştırma Hatası: $e");
-      return []; // Hata durumunda boş liste döndür
+      return [];
     }
   }
 
   // Ürünleri yükleme metodu
-  Future<List<Product>> urunleriYukle() async {
+  Future<List<Product>> urunleriYukle({String kategori = "Tüm Ürünler"}) async {
     var url = "http://kasimadalan.pe.hu/urunler/tumUrunleriGetir.php";
     var cevap = await Dio().get(url);
-    return parseProductCevap(cevap.data.toString());
+    var tumUrunler = parseProductCevap(cevap.data.toString());
+
+    // Kategoriye göre filtreleme işlemi
+    if (kategori != "Tüm Ürünler") {
+      return tumUrunler.where((urun) => urun.kategori == kategori).toList();
+    } else {
+      return tumUrunler;
+    }
   }
 
   // Sepetteki ürünleri listeleme metodu
@@ -43,12 +50,34 @@ class ProductRepo {
       var cevap = await Dio().post(url, data: FormData.fromMap(veri));
       print("API Yanıtı: ${cevap.data.toString()}");
       var jsonResult = json.decode(cevap.data.toString());
-      print(jsonResult.toString());
+
       var sepetListesi = (jsonResult['urunler_sepeti'] as List?)
               ?.map((item) => CartProduct.fromJson(item))
               .toList() ??
           [];
-      return sepetListesi;
+
+      // Aynı id'li ürünleri birleştirme işlemi
+      Map<String, CartProduct> productMap =
+          {}; // product.id ve sepetId'yi anahtar yapıyoruz
+
+      for (var product in sepetListesi) {
+        String key =
+            '${product.product.id}_${product.product.ad}'; // product.id ve sepetId birleşimi
+        if (productMap.containsKey(key)) {
+          // Aynı id ve sepetId'ye sahip ürünlerin siparisAdeti değerini topluyoruz
+          productMap[key] = CartProduct(
+            product: product.product,
+            siparisAdeti: productMap[key]!.siparisAdeti + product.siparisAdeti,
+            kullaniciAdi: product.kullaniciAdi,
+            sepetId: product.sepetId,
+          );
+        } else {
+          // Yeni bir key için CartProduct ekliyoruz
+          productMap[key] = product;
+        }
+      }
+      // Birleştirilmiş ürünleri içeren listeyi döndürüyoruz
+      return productMap.values.toList();
     } catch (e) {
       print("Sepet Listeleme Hatası: $e");
       return [];
@@ -103,14 +132,30 @@ class ProductRepo {
     }
   }
 
+  Future<void> sepetiBosalt(
+      String kullaniciAdi, List<CartProduct> sepetListesi) async {
+    for (var cartProduct in sepetListesi) {
+      sepetUrunSil(kullaniciAdi, cartProduct.sepetId);
+    }
+  }
+
   // Kategorileri yükleme metodu
   Future<List<Kategori>> kategoriler() async {
     var kategoriler = <Kategori>[];
 
-    var teknoloji = Kategori(name: "Teknoloji", imagePath: "images/laptop.png");
-    var kozmetik = Kategori(name: "Kozmetik", imagePath: "images/ruj.png");
-    var aksesuar = Kategori(name: "Aksesuar", imagePath: "images/kulaklik.png");
-
+    var teknoloji = Kategori(
+      name: "Teknoloji",
+    );
+    var kozmetik = Kategori(
+      name: "Kozmetik",
+    );
+    var aksesuar = Kategori(
+      name: "Aksesuar",
+    );
+    var tumUrunler = Kategori(
+      name: "Tüm Ürünler",
+    );
+    kategoriler.add(tumUrunler);
     kategoriler.add(teknoloji);
     kategoriler.add(aksesuar);
     kategoriler.add(kozmetik);
