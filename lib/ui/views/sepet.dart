@@ -105,30 +105,51 @@ class _SepetState extends State<Sepet> {
                             horizontal: 24, vertical: 12),
                       ),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Sepet Onay"),
-                            content: const Text("Sepeti Onaylıyor musunuz??"),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Hayır"),
+                        if (cartProducts.isEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: const Text(
+                                "Lütfen Sepetinize Ürün Ekleyiniz!",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  context
-                                      .read<SepetCubit>()
-                                      .sepetiBosalt("enessodbs");
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Evet"),
-                              ),
-                            ],
-                          ),
-                        );
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Kapat"),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Sepet Onay"),
+                              content: const Text("Sepeti Onaylıyor musunuz??"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Hayır"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<SepetCubit>()
+                                        .sepetiBosalt("enessodbs");
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Evet"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       },
                       child: const Text(
                         "Sepeti Onayla",
